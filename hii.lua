@@ -917,10 +917,10 @@ function Centrix:CreateWindow(options)
                 Size = UDim2.new(0, buttonSize - 10, 0, 3)
             }, 0.25, Enum.EasingStyle.Quint)
             
-            -- Fade in content
+            -- Animate content in (slide from right)
             TabPage.Visible = true
-            TabPage.GroupTransparency = 1
-            Tween(TabPage, {GroupTransparency = 0}, 0.25)
+            TabPage.Position = UDim2.new(0.1, 0, 0, 0)
+            Tween(TabPage, {Position = UDim2.new(0, 0, 0, 0)}, 0.25, Enum.EasingStyle.Quint)
             
             Window.ActiveTab = Tab
         end
