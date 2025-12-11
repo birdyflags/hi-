@@ -1,10 +1,7 @@
 --[[
     ╔═══════════════════════════════════════════════════════════════╗
-    ║                     CENTRIX UI LIBRARY                        ║
-    ║                        Version 1.0                            ║
-    ║                                                               ║
-    ║     A modern, smooth Roblox UI library with acrylic          ║
-    ║     transparency and lavender aesthetics                     ║
+    ║                     CENTRIX UI LIBRARY v2                     ║
+    ║              Premium Design • Smooth Animations               ║
     ╚═══════════════════════════════════════════════════════════════╝
 ]]
 
@@ -20,1245 +17,829 @@ local MarketplaceService = game:GetService("MarketplaceService")
 local CoreGui = game:GetService("CoreGui")
 
 local Player = Players.LocalPlayer
-local Mouse = Player:GetMouse()
 
 -- ═══════════════════════════════════════════════════════════════
--- THEME CONFIGURATION
+-- PREMIUM THEME - Cohesive Lavender/Purple
 -- ═══════════════════════════════════════════════════════════════
 
 Centrix.Theme = {
-    -- Primary Colors (Lavender/Purple with white accents)
-    Primary = Color3.fromRGB(147, 112, 219),        -- Medium Purple
-    PrimaryDark = Color3.fromRGB(123, 88, 195),     -- Darker Purple
-    PrimaryLight = Color3.fromRGB(180, 150, 230),   -- Light Lavender
+    -- Main Colors
+    Primary = Color3.fromRGB(138, 99, 210),
+    PrimaryLight = Color3.fromRGB(167, 139, 225),
+    PrimaryDark = Color3.fromRGB(98, 71, 170),
+    Accent = Color3.fromRGB(180, 160, 255),
     
-    -- Accent Colors
-    Accent = Color3.fromRGB(200, 180, 255),         -- Soft Lavender
-    AccentGlow = Color3.fromRGB(220, 200, 255),     -- Glow Lavender
+    -- Backgrounds (Less transparent, more solid)
+    Background = Color3.fromRGB(18, 15, 28),
+    BackgroundFloat = Color3.fromRGB(25, 21, 38),
+    BackgroundCard = Color3.fromRGB(32, 27, 48),
+    BackgroundElement = Color3.fromRGB(42, 36, 62),
     
-    -- Background Colors (with transparency support)
-    Background = Color3.fromRGB(25, 20, 35),        -- Deep Purple-Black
-    BackgroundSecondary = Color3.fromRGB(35, 28, 50), -- Slightly lighter
-    BackgroundTertiary = Color3.fromRGB(45, 38, 65),  -- Tab hover
+    -- Text
+    TextPrimary = Color3.fromRGB(255, 255, 255),
+    TextSecondary = Color3.fromRGB(190, 180, 210),
+    TextMuted = Color3.fromRGB(130, 120, 155),
     
-    -- Surface Colors
-    Surface = Color3.fromRGB(40, 32, 55),           -- Card/Surface
-    SurfaceHover = Color3.fromRGB(55, 45, 75),      -- Hover state
-    SurfaceActive = Color3.fromRGB(65, 55, 90),     -- Active/Selected
-    
-    -- Text Colors
-    Text = Color3.fromRGB(255, 255, 255),           -- Primary text
-    TextSecondary = Color3.fromRGB(180, 170, 200),  -- Secondary text
-    TextMuted = Color3.fromRGB(120, 110, 140),      -- Muted text
-    
-    -- Border & Divider
-    Border = Color3.fromRGB(80, 65, 110),           -- Subtle border
-    Divider = Color3.fromRGB(60, 50, 80),           -- Dividers
+    -- Borders & Shadows
+    Border = Color3.fromRGB(65, 55, 95),
+    BorderHover = Color3.fromRGB(138, 99, 210),
+    Shadow = Color3.fromRGB(8, 6, 15),
     
     -- States
-    Success = Color3.fromRGB(130, 220, 150),        -- Green
-    Warning = Color3.fromRGB(255, 200, 100),        -- Yellow/Orange
-    Error = Color3.fromRGB(255, 120, 120),          -- Red
-    Info = Color3.fromRGB(130, 180, 255),           -- Blue
+    Success = Color3.fromRGB(100, 220, 140),
+    Warning = Color3.fromRGB(255, 190, 80),
+    Error = Color3.fromRGB(255, 100, 100),
+    Info = Color3.fromRGB(100, 180, 255),
     
-    -- Transparency
-    AcrylicTransparency = 0.15,
-    BackgroundTransparency = 0.05,
+    -- Glow
+    Glow = Color3.fromRGB(138, 99, 210),
+    GlowAlpha = 0.3,
 }
 
 -- ═══════════════════════════════════════════════════════════════
--- ICON LIBRARY (Roblox Asset IDs)
+-- ICONS
 -- ═══════════════════════════════════════════════════════════════
 
 Centrix.Icons = {
-    -- Navigation & UI
-    Home = "rbxassetid://7733960981",
-    Settings = "rbxassetid://7734053495",
-    Menu = "rbxassetid://7734042665",
-    Close = "rbxassetid://7734003889",
-    Minimize = "rbxassetid://7734042158",
-    Maximize = "rbxassetid://7734041324",
-    
-    -- Actions
-    Search = "rbxassetid://7734053104",
-    Add = "rbxassetid://7733664961",
-    Remove = "rbxassetid://7734048430",
-    Edit = "rbxassetid://7734007140",
-    Save = "rbxassetid://7734052561",
-    Refresh = "rbxassetid://7734048175",
-    
-    -- Status
-    Check = "rbxassetid://7733715400",
-    Warning = "rbxassetid://7734062330",
-    Error = "rbxassetid://7734007747",
-    Info = "rbxassetid://7734014268",
-    
-    -- Security
-    Lock = "rbxassetid://7734038914",
-    Unlock = "rbxassetid://7734059314",
-    Key = "rbxassetid://7734028671",
-    Fingerprint = "rbxassetid://7734011497",
-    Shield = "rbxassetid://7734053248",
-    
-    -- User & Social
-    User = "rbxassetid://7734058893",
-    Users = "rbxassetid://7734059057",
-    Heart = "rbxassetid://7734013726",
-    Star = "rbxassetid://7734055553",
-    
-    -- Media
-    Play = "rbxassetid://7734045577",
-    Pause = "rbxassetid://7734045232",
-    Stop = "rbxassetid://7734055693",
-    Music = "rbxassetid://7734042870",
-    
-    -- Arrows
-    ArrowUp = "rbxassetid://7734010862",
-    ArrowDown = "rbxassetid://7734010692",
-    ArrowLeft = "rbxassetid://7734010755",
-    ArrowRight = "rbxassetid://7734010812",
-    ChevronDown = "rbxassetid://7734004077",
-    ChevronUp = "rbxassetid://7734004305",
-    
-    -- Gaming
-    Sword = "rbxassetid://7734055853",
-    Target = "rbxassetid://7734056001",
-    Gamepad = "rbxassetid://7734011654",
-    Trophy = "rbxassetid://7734058509",
-    
-    -- Misc
-    Folder = "rbxassetid://7734011232",
-    File = "rbxassetid://7734008073",
-    Code = "rbxassetid://7734004694",
-    Terminal = "rbxassetid://7734056149",
-    Globe = "rbxassetid://7734012060",
-    Lightning = "rbxassetid://7734038617",
-    Fire = "rbxassetid://7734008238",
-    Sparkle = "rbxassetid://7734055142",
+    Home = "rbxassetid://7733960981", Settings = "rbxassetid://7734053495",
+    Close = "rbxassetid://7734003889", Minimize = "rbxassetid://7734042158",
+    Check = "rbxassetid://7733715400", Warning = "rbxassetid://7734062330",
+    Error = "rbxassetid://7734007747", Info = "rbxassetid://7734014268",
+    Lock = "rbxassetid://7734038914", Key = "rbxassetid://7734028671",
+    Shield = "rbxassetid://7734053248", User = "rbxassetid://7734058893",
+    Sword = "rbxassetid://7734055853", Target = "rbxassetid://7734056001",
+    ChevronDown = "rbxassetid://7734004077", ChevronUp = "rbxassetid://7734004305",
+    Folder = "rbxassetid://7734011232", Code = "rbxassetid://7734004694",
+    Lightning = "rbxassetid://7734038617", Sparkle = "rbxassetid://7734055142",
+    Search = "rbxassetid://7734053104", Star = "rbxassetid://7734055553",
 }
 
 -- ═══════════════════════════════════════════════════════════════
--- ANIMATION UTILITIES
+-- ANIMATION SYSTEM
 -- ═══════════════════════════════════════════════════════════════
 
-local Animations = {}
+local Anim = {}
 
-function Animations.Tween(object, properties, duration, easingStyle, easingDirection)
-    duration = duration or 0.3
-    easingStyle = easingStyle or Enum.EasingStyle.Quint
-    easingDirection = easingDirection or Enum.EasingDirection.Out
-    
-    local tweenInfo = TweenInfo.new(duration, easingStyle, easingDirection)
-    local tween = TweenService:Create(object, tweenInfo, properties)
-    tween:Play()
-    return tween
+function Anim.Tween(obj, props, dur, style, dir)
+    local ti = TweenInfo.new(dur or 0.25, style or Enum.EasingStyle.Quint, dir or Enum.EasingDirection.Out)
+    local tw = TweenService:Create(obj, ti, props)
+    tw:Play()
+    return tw
 end
 
-function Animations.FadeIn(object, duration)
-    object.BackgroundTransparency = 1
-    return Animations.Tween(object, {BackgroundTransparency = Centrix.Theme.AcrylicTransparency}, duration or 0.3)
+function Anim.Spring(obj, props, dur)
+    return Anim.Tween(obj, props, dur or 0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
 end
 
-function Animations.FadeOut(object, duration)
-    return Animations.Tween(object, {BackgroundTransparency = 1}, duration or 0.3)
+function Anim.Bounce(obj, props, dur)
+    return Anim.Tween(obj, props, dur or 0.5, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out)
 end
 
-function Animations.ScaleIn(object, duration)
-    local originalSize = object.Size
-    object.Size = UDim2.new(originalSize.X.Scale * 0.8, originalSize.X.Offset * 0.8, originalSize.Y.Scale * 0.8, originalSize.Y.Offset * 0.8)
-    return Animations.Tween(object, {Size = originalSize}, duration or 0.3, Enum.EasingStyle.Back)
-end
-
-function Animations.SlideIn(object, direction, duration)
-    local originalPosition = object.Position
-    direction = direction or "Bottom"
-    
-    if direction == "Bottom" then
-        object.Position = UDim2.new(originalPosition.X.Scale, originalPosition.X.Offset, 1.5, 0)
-    elseif direction == "Top" then
-        object.Position = UDim2.new(originalPosition.X.Scale, originalPosition.X.Offset, -0.5, 0)
-    elseif direction == "Left" then
-        object.Position = UDim2.new(-0.5, 0, originalPosition.Y.Scale, originalPosition.Y.Offset)
-    elseif direction == "Right" then
-        object.Position = UDim2.new(1.5, 0, originalPosition.Y.Scale, originalPosition.Y.Offset)
-    end
-    
-    return Animations.Tween(object, {Position = originalPosition}, duration or 0.4, Enum.EasingStyle.Quint)
-end
-
-function Animations.Ripple(button, x, y)
-    local ripple = Instance.new("Frame")
-    ripple.Name = "Ripple"
-    ripple.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ripple.BackgroundTransparency = 0.7
-    ripple.BorderSizePixel = 0
-    ripple.ZIndex = button.ZIndex + 1
-    ripple.AnchorPoint = Vector2.new(0.5, 0.5)
-    ripple.Position = UDim2.new(0, x, 0, y)
-    ripple.Size = UDim2.new(0, 0, 0, 0)
-    ripple.Parent = button
-    
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(1, 0)
-    corner.Parent = ripple
-    
-    local maxSize = math.max(button.AbsoluteSize.X, button.AbsoluteSize.Y) * 2.5
-    
-    Animations.Tween(ripple, {
-        Size = UDim2.new(0, maxSize, 0, maxSize),
-        BackgroundTransparency = 1
-    }, 0.5)
-    
-    task.delay(0.5, function()
-        ripple:Destroy()
-    end)
+function Anim.Elastic(obj, props, dur)
+    return Anim.Tween(obj, props, dur or 0.6, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out)
 end
 
 -- ═══════════════════════════════════════════════════════════════
--- UTILITY FUNCTIONS
+-- UTILITIES
 -- ═══════════════════════════════════════════════════════════════
 
-local Utils = {}
-
-function Utils.Create(className, properties)
-    local instance = Instance.new(className)
-    for prop, value in pairs(properties or {}) do
-        if prop ~= "Parent" then
-            instance[prop] = value
-        end
+local function Create(class, props)
+    local inst = Instance.new(class)
+    for k, v in pairs(props or {}) do
+        if k ~= "Parent" then inst[k] = v end
     end
-    if properties and properties.Parent then
-        instance.Parent = properties.Parent
-    end
-    return instance
+    if props and props.Parent then inst.Parent = props.Parent end
+    return inst
 end
 
-function Utils.GetGameName()
-    local success, info = pcall(function()
-        return MarketplaceService:GetProductInfo(game.PlaceId)
-    end)
-    if success and info then
-        return info.Name
-    end
-    return "Unknown Game"
+local function GetGameName()
+    local ok, info = pcall(function() return MarketplaceService:GetProductInfo(game.PlaceId) end)
+    return ok and info and info.Name or "Unknown Game"
 end
 
-function Utils.Draggable(frame, handle)
+local function MakeDraggable(frame, handle)
+    local dragging, dragStart, startPos
     handle = handle or frame
-    local dragging, dragInput, dragStart, startPos
-
+    
     handle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = true
             dragStart = input.Position
             startPos = frame.Position
-
             input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
+                if input.UserInputState == Enum.UserInputState.End then dragging = false end
             end)
         end
     end)
-
-    handle.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            dragInput = input
-        end
-    end)
-
+    
     UserInputService.InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
             local delta = input.Position - dragStart
-            Animations.Tween(frame, {
-                Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-            }, 0.08)
+            Anim.Tween(frame, {Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)}, 0.05)
         end
     end)
 end
 
 -- ═══════════════════════════════════════════════════════════════
--- ACRYLIC BACKGROUND CREATOR
+-- TOOLTIP SYSTEM
 -- ═══════════════════════════════════════════════════════════════
 
-local function CreateAcrylicBackground(parent, cornerRadius)
-    -- Main blur effect container
-    local acrylicContainer = Utils.Create("Frame", {
-        Name = "AcrylicBackground",
-        Size = UDim2.new(1, 0, 1, 0),
-        BackgroundColor3 = Centrix.Theme.Background,
-        BackgroundTransparency = Centrix.Theme.AcrylicTransparency,
-        BorderSizePixel = 0,
-        Parent = parent,
-        ZIndex = parent.ZIndex
-    })
+local TooltipFrame
+
+local function ShowTooltip(text, parent)
+    if not TooltipFrame then
+        TooltipFrame = Create("Frame", {
+            Name = "Tooltip",
+            Size = UDim2.new(0, 200, 0, 40),
+            BackgroundColor3 = Centrix.Theme.BackgroundFloat,
+            BorderSizePixel = 0,
+            Visible = false,
+            ZIndex = 100,
+            Parent = CoreGui
+        })
+        Create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = TooltipFrame})
+        Create("UIStroke", {Color = Centrix.Theme.Border, Thickness = 1, Parent = TooltipFrame})
+        Create("UIPadding", {PaddingLeft = UDim.new(0,10), PaddingRight = UDim.new(0,10), PaddingTop = UDim.new(0,8), PaddingBottom = UDim.new(0,8), Parent = TooltipFrame})
+        
+        Create("TextLabel", {
+            Name = "Text",
+            Size = UDim2.new(1, 0, 1, 0),
+            BackgroundTransparency = 1,
+            Text = "",
+            TextColor3 = Centrix.Theme.TextSecondary,
+            TextSize = 12,
+            Font = Enum.Font.Gotham,
+            TextWrapped = true,
+            TextXAlignment = Enum.TextXAlignment.Left,
+            ZIndex = 101,
+            Parent = TooltipFrame
+        })
+    end
     
-    -- Corner rounding
-    Utils.Create("UICorner", {
-        CornerRadius = cornerRadius or UDim.new(0, 12),
-        Parent = acrylicContainer
-    })
+    TooltipFrame.Text.Text = text
+    TooltipFrame.Size = UDim2.new(0, math.min(250, #text * 6 + 20), 0, 36)
+    TooltipFrame.Visible = true
+    TooltipFrame.BackgroundTransparency = 1
+    Anim.Tween(TooltipFrame, {BackgroundTransparency = 0}, 0.15)
     
-    -- Gradient overlay for depth
-    local gradient = Utils.Create("UIGradient", {
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 180, 220))
-        }),
-        Transparency = NumberSequence.new({
-            NumberSequenceKeypoint.new(0, 0.95),
-            NumberSequenceKeypoint.new(1, 0.98)
-        }),
-        Rotation = 45,
-        Parent = acrylicContainer
-    })
-    
-    -- Subtle inner glow/border
-    local stroke = Utils.Create("UIStroke", {
-        Color = Centrix.Theme.Border,
-        Thickness = 1,
-        Transparency = 0.5,
-        Parent = acrylicContainer
-    })
-    
-    -- Noise texture for acrylic effect
-    local noise = Utils.Create("ImageLabel", {
-        Name = "Noise",
-        Size = UDim2.new(1, 0, 1, 0),
-        BackgroundTransparency = 1,
-        Image = "rbxassetid://8992230677", -- Noise texture
-        ImageTransparency = 0.97,
-        ScaleType = Enum.ScaleType.Tile,
-        TileSize = UDim2.new(0, 128, 0, 128),
-        Parent = acrylicContainer,
-        ZIndex = acrylicContainer.ZIndex + 1
-    })
-    
-    Utils.Create("UICorner", {
-        CornerRadius = cornerRadius or UDim.new(0, 12),
-        Parent = noise
-    })
-    
-    return acrylicContainer
+    RunService.RenderStepped:Connect(function()
+        if TooltipFrame.Visible then
+            local mouse = UserInputService:GetMouseLocation()
+            TooltipFrame.Position = UDim2.new(0, mouse.X + 15, 0, mouse.Y + 15)
+        end
+    end)
+end
+
+local function HideTooltip()
+    if TooltipFrame then
+        Anim.Tween(TooltipFrame, {BackgroundTransparency = 1}, 0.1)
+        task.delay(0.1, function() TooltipFrame.Visible = false end)
+    end
 end
 
 -- ═══════════════════════════════════════════════════════════════
 -- NOTIFICATION SYSTEM
 -- ═══════════════════════════════════════════════════════════════
 
-local NotificationHolder
+local NotifHolder
 
-function Centrix:Notify(options)
-    options = options or {}
-    local title = options.Title or "Notification"
-    local message = options.Message or ""
-    local duration = options.Duration or 4
-    local notifType = options.Type or "Info" -- Info, Success, Warning, Error
+function Centrix:Notify(opts)
+    opts = opts or {}
     
-    -- Create notification holder if doesn't exist
-    if not NotificationHolder or not NotificationHolder.Parent then
-        NotificationHolder = Utils.Create("Frame", {
-            Name = "CentrixNotifications",
-            Size = UDim2.new(0, 320, 1, -20),
-            Position = UDim2.new(1, -330, 0, 10),
-            BackgroundTransparency = 1,
-            Parent = CoreGui
+    if not NotifHolder then
+        NotifHolder = Create("Frame", {
+            Name = "CentrixNotifs", Size = UDim2.new(0, 300, 1, -20),
+            Position = UDim2.new(1, -310, 0, 10), BackgroundTransparency = 1, Parent = CoreGui
         })
-        
-        Utils.Create("UIListLayout", {
-            Padding = UDim.new(0, 8),
-            SortOrder = Enum.SortOrder.LayoutOrder,
-            VerticalAlignment = Enum.VerticalAlignment.Top,
-            Parent = NotificationHolder
-        })
+        Create("UIListLayout", {Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder, Parent = NotifHolder})
     end
     
-    -- Notification colors based on type
-    local colors = {
-        Info = Centrix.Theme.Info,
-        Success = Centrix.Theme.Success,
-        Warning = Centrix.Theme.Warning,
-        Error = Centrix.Theme.Error
-    }
+    local colors = {Info = Centrix.Theme.Info, Success = Centrix.Theme.Success, Warning = Centrix.Theme.Warning, Error = Centrix.Theme.Error}
+    local icons = {Info = Centrix.Icons.Info, Success = Centrix.Icons.Check, Warning = Centrix.Icons.Warning, Error = Centrix.Icons.Error}
+    local col = colors[opts.Type] or colors.Info
+    local ico = icons[opts.Type] or icons.Info
     
-    local icons = {
-        Info = Centrix.Icons.Info,
-        Success = Centrix.Icons.Check,
-        Warning = Centrix.Icons.Warning,
-        Error = Centrix.Icons.Error
-    }
+    local notif = Create("Frame", {
+        Size = UDim2.new(1, 0, 0, 72), BackgroundColor3 = Centrix.Theme.BackgroundCard,
+        BorderSizePixel = 0, ClipsDescendants = true, Parent = NotifHolder
+    })
+    Create("UICorner", {CornerRadius = UDim.new(0, 10), Parent = notif})
     
-    local notifColor = colors[notifType] or colors.Info
-    local notifIcon = icons[notifType] or icons.Info
-    
-    -- Create notification
-    local notification = Utils.Create("Frame", {
-        Name = "Notification",
-        Size = UDim2.new(1, 0, 0, 70),
-        BackgroundColor3 = Centrix.Theme.Surface,
-        BackgroundTransparency = 0.1,
-        BorderSizePixel = 0,
-        ClipsDescendants = true,
-        Parent = NotificationHolder
+    -- Shadow
+    Create("ImageLabel", {
+        Size = UDim2.new(1, 24, 1, 24), Position = UDim2.new(0.5, 0, 0.5, 4), AnchorPoint = Vector2.new(0.5, 0.5),
+        BackgroundTransparency = 1, Image = "rbxassetid://6014261993", ImageColor3 = Centrix.Theme.Shadow,
+        ImageTransparency = 0.4, ScaleType = Enum.ScaleType.Slice, SliceCenter = Rect.new(49, 49, 450, 450),
+        ZIndex = -1, Parent = notif
     })
     
-    Utils.Create("UICorner", {
-        CornerRadius = UDim.new(0, 10),
-        Parent = notification
-    })
-    
-    Utils.Create("UIStroke", {
-        Color = notifColor,
-        Thickness = 1,
-        Transparency = 0.5,
-        Parent = notification
-    })
-    
-    -- Accent bar
-    local accentBar = Utils.Create("Frame", {
-        Name = "AccentBar",
-        Size = UDim2.new(0, 4, 1, 0),
-        BackgroundColor3 = notifColor,
-        BorderSizePixel = 0,
-        Parent = notification
-    })
-    
-    Utils.Create("UICorner", {
-        CornerRadius = UDim.new(0, 4),
-        Parent = accentBar
-    })
+    -- Accent
+    Create("Frame", {Size = UDim2.new(0,4,1,0), BackgroundColor3 = col, BorderSizePixel = 0, Parent = notif})
     
     -- Icon
-    local icon = Utils.Create("ImageLabel", {
-        Name = "Icon",
-        Size = UDim2.new(0, 24, 0, 24),
-        Position = UDim2.new(0, 16, 0.5, -12),
-        BackgroundTransparency = 1,
-        Image = notifIcon,
-        ImageColor3 = notifColor,
-        Parent = notification
+    Create("ImageLabel", {
+        Size = UDim2.new(0,22,0,22), Position = UDim2.new(0,16,0.5,-11),
+        BackgroundTransparency = 1, Image = ico, ImageColor3 = col, Parent = notif
     })
     
     -- Title
-    local titleLabel = Utils.Create("TextLabel", {
-        Name = "Title",
-        Size = UDim2.new(1, -70, 0, 22),
-        Position = UDim2.new(0, 50, 0, 12),
-        BackgroundTransparency = 1,
-        Text = title,
-        TextColor3 = Centrix.Theme.Text,
-        TextSize = 15,
-        Font = Enum.Font.GothamBold,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        Parent = notification
+    Create("TextLabel", {
+        Size = UDim2.new(1,-60,0,20), Position = UDim2.new(0,48,0,14),
+        BackgroundTransparency = 1, Text = opts.Title or "Notification",
+        TextColor3 = Centrix.Theme.TextPrimary, TextSize = 14, Font = Enum.Font.GothamBold,
+        TextXAlignment = Enum.TextXAlignment.Left, Parent = notif
     })
     
     -- Message
-    local messageLabel = Utils.Create("TextLabel", {
-        Name = "Message",
-        Size = UDim2.new(1, -70, 0, 30),
-        Position = UDim2.new(0, 50, 0, 34),
-        BackgroundTransparency = 1,
-        Text = message,
-        TextColor3 = Centrix.Theme.TextSecondary,
-        TextSize = 13,
-        Font = Enum.Font.Gotham,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        TextWrapped = true,
-        TextTruncate = Enum.TextTruncate.AtEnd,
-        Parent = notification
+    Create("TextLabel", {
+        Size = UDim2.new(1,-60,0,24), Position = UDim2.new(0,48,0,36),
+        BackgroundTransparency = 1, Text = opts.Message or "",
+        TextColor3 = Centrix.Theme.TextSecondary, TextSize = 12, Font = Enum.Font.Gotham,
+        TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, Parent = notif
     })
     
-    -- Progress bar
-    local progressBar = Utils.Create("Frame", {
-        Name = "ProgressBar",
-        Size = UDim2.new(1, 0, 0, 3),
-        Position = UDim2.new(0, 0, 1, -3),
-        BackgroundColor3 = notifColor,
-        BorderSizePixel = 0,
-        Parent = notification
+    -- Progress
+    local prog = Create("Frame", {
+        Size = UDim2.new(1,0,0,3), Position = UDim2.new(0,0,1,-3),
+        BackgroundColor3 = col, BorderSizePixel = 0, Parent = notif
     })
     
-    -- Animate in
-    notification.Position = UDim2.new(1, 50, 0, 0)
-    Animations.Tween(notification, {Position = UDim2.new(0, 0, 0, 0)}, 0.4, Enum.EasingStyle.Quint)
+    -- Animate
+    notif.Position = UDim2.new(1, 50, 0, 0)
+    Anim.Spring(notif, {Position = UDim2.new(0, 0, 0, 0)}, 0.5)
+    Anim.Tween(prog, {Size = UDim2.new(0, 0, 0, 3)}, opts.Duration or 4, Enum.EasingStyle.Linear)
     
-    -- Animate progress bar
-    Animations.Tween(progressBar, {Size = UDim2.new(0, 0, 0, 3)}, duration, Enum.EasingStyle.Linear)
-    
-    -- Auto dismiss
-    task.delay(duration, function()
-        Animations.Tween(notification, {Position = UDim2.new(1, 50, 0, 0)}, 0.3)
+    task.delay(opts.Duration or 4, function()
+        Anim.Tween(notif, {Position = UDim2.new(1, 50, 0, 0)}, 0.3)
         task.wait(0.35)
-        notification:Destroy()
+        notif:Destroy()
     end)
-    
-    return notification
 end
 
 -- ═══════════════════════════════════════════════════════════════
--- WINDOW CREATION
+-- WINDOW
 -- ═══════════════════════════════════════════════════════════════
 
-function Centrix:CreateWindow(options)
-    options = options or {}
+function Centrix:CreateWindow()
+    local Window = {Tabs = {}, ActiveTab = nil}
+    local gameName = GetGameName()
     
-    local Window = {}
-    Window.Tabs = {}
-    Window.ActiveTab = nil
+    local gui = Create("ScreenGui", {Name = "CentrixHub", ResetOnSpawn = false, ZIndexBehavior = Enum.ZIndexBehavior.Sibling, Parent = CoreGui})
     
-    -- Get game name
-    local gameName = Utils.GetGameName()
+    local main = Create("Frame", {
+        Name = "Main", Size = UDim2.new(0, 600, 0, 440), Position = UDim2.new(0.5, -300, 0.5, -220),
+        BackgroundColor3 = Centrix.Theme.Background, BorderSizePixel = 0, Parent = gui
+    })
+    Create("UICorner", {CornerRadius = UDim.new(0, 12), Parent = main})
     
-    -- Create ScreenGui
-    local screenGui = Utils.Create("ScreenGui", {
-        Name = "CentrixHub",
-        ResetOnSpawn = false,
-        ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
-        Parent = CoreGui
+    -- Main Shadow
+    Create("ImageLabel", {
+        Size = UDim2.new(1, 60, 1, 60), Position = UDim2.new(0.5, 0, 0.5, 6), AnchorPoint = Vector2.new(0.5, 0.5),
+        BackgroundTransparency = 1, Image = "rbxassetid://6014261993", ImageColor3 = Centrix.Theme.Shadow,
+        ImageTransparency = 0.3, ScaleType = Enum.ScaleType.Slice, SliceCenter = Rect.new(49, 49, 450, 450),
+        ZIndex = -1, Parent = main
     })
     
-    Window.ScreenGui = screenGui
-    
-    -- Main Window Frame
-    local mainWindow = Utils.Create("Frame", {
-        Name = "MainWindow",
-        Size = UDim2.new(0, 580, 0, 420),
-        Position = UDim2.new(0.5, -290, 0.5, -210),
-        BackgroundTransparency = 1,
-        Parent = screenGui
-    })
-    
-    Window.MainFrame = mainWindow
-    
-    -- Acrylic Background
-    local acrylicBg = CreateAcrylicBackground(mainWindow, UDim.new(0, 12))
-    
-    -- Shadow
-    local shadow = Utils.Create("ImageLabel", {
-        Name = "Shadow",
-        Size = UDim2.new(1, 40, 1, 40),
-        Position = UDim2.new(0.5, 0, 0.5, 0),
-        AnchorPoint = Vector2.new(0.5, 0.5),
-        BackgroundTransparency = 1,
-        Image = "rbxassetid://6014261993",
-        ImageColor3 = Color3.fromRGB(0, 0, 0),
-        ImageTransparency = 0.5,
-        ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(49, 49, 450, 450),
-        ZIndex = mainWindow.ZIndex - 1,
-        Parent = mainWindow
-    })
+    -- Glow border
+    Create("UIStroke", {Color = Centrix.Theme.Primary, Thickness = 1.5, Transparency = 0.7, Parent = main})
     
     -- Header
-    local header = Utils.Create("Frame", {
-        Name = "Header",
-        Size = UDim2.new(1, 0, 0, 70),
-        BackgroundTransparency = 1,
-        Parent = mainWindow,
-        ZIndex = 2
+    local header = Create("Frame", {Name = "Header", Size = UDim2.new(1, 0, 0, 65), BackgroundTransparency = 1, Parent = main})
+    
+    -- Title with glow effect
+    local title = Create("TextLabel", {
+        Size = UDim2.new(0, 200, 0, 28), Position = UDim2.new(0, 20, 0, 12),
+        BackgroundTransparency = 1, Text = "CENTRIX HUB", TextColor3 = Centrix.Theme.TextPrimary,
+        TextSize = 22, Font = Enum.Font.GothamBlack, TextXAlignment = Enum.TextXAlignment.Left, Parent = header
     })
     
-    -- Title: CENTRIX HUB
-    local titleLabel = Utils.Create("TextLabel", {
-        Name = "Title",
-        Size = UDim2.new(1, -100, 0, 32),
-        Position = UDim2.new(0, 20, 0, 12),
-        BackgroundTransparency = 1,
-        Text = "CENTRIX HUB",
-        TextColor3 = Centrix.Theme.Text,
-        TextSize = 24,
-        Font = Enum.Font.GothamBlack,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        Parent = header,
-        ZIndex = 3
-    })
-    
-    -- Title gradient effect
-    local titleGradient = Utils.Create("UIGradient", {
+    -- Title gradient animation
+    local grad = Create("UIGradient", {
         Color = ColorSequence.new({
             ColorSequenceKeypoint.new(0, Centrix.Theme.Primary),
-            ColorSequenceKeypoint.new(0.5, Centrix.Theme.AccentGlow),
+            ColorSequenceKeypoint.new(0.5, Centrix.Theme.Accent),
             ColorSequenceKeypoint.new(1, Centrix.Theme.Primary)
-        }),
-        Parent = titleLabel
+        }), Parent = title
     })
     
-    -- Animate title gradient
     task.spawn(function()
-        while titleLabel and titleLabel.Parent do
-            for i = 0, 1, 0.01 do
-                if not titleLabel or not titleLabel.Parent then break end
-                titleGradient.Offset = Vector2.new(i - 0.5, 0)
-                task.wait(0.03)
+        while title.Parent do
+            for i = 0, 1, 0.008 do
+                if not title.Parent then break end
+                grad.Offset = Vector2.new(i - 0.5, 0)
+                task.wait()
             end
         end
     end)
     
-    -- Game name subtitle
-    local gameLabel = Utils.Create("TextLabel", {
-        Name = "GameName",
-        Size = UDim2.new(1, -100, 0, 18),
-        Position = UDim2.new(0, 20, 0, 42),
-        BackgroundTransparency = 1,
-        Text = gameName,
-        TextColor3 = Centrix.Theme.TextSecondary,
-        TextSize = 12,
-        Font = Enum.Font.Gotham,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        Parent = header,
-        ZIndex = 3
+    -- Game name
+    Create("TextLabel", {
+        Size = UDim2.new(0, 300, 0, 16), Position = UDim2.new(0, 20, 0, 42),
+        BackgroundTransparency = 1, Text = "🎮 " .. gameName,
+        TextColor3 = Centrix.Theme.TextMuted, TextSize = 11, Font = Enum.Font.Gotham,
+        TextXAlignment = Enum.TextXAlignment.Left, Parent = header
     })
     
-    -- Close button
-    local closeBtn = Utils.Create("ImageButton", {
-        Name = "CloseButton",
-        Size = UDim2.new(0, 28, 0, 28),
-        Position = UDim2.new(1, -42, 0, 20),
-        BackgroundColor3 = Centrix.Theme.Error,
-        BackgroundTransparency = 0.8,
-        Image = Centrix.Icons.Close,
-        ImageColor3 = Centrix.Theme.Text,
-        ImageTransparency = 0.2,
-        Parent = header,
-        ZIndex = 3
-    })
-    
-    Utils.Create("UICorner", {
-        CornerRadius = UDim.new(0, 6),
-        Parent = closeBtn
-    })
-    
-    closeBtn.MouseEnter:Connect(function()
-        Animations.Tween(closeBtn, {BackgroundTransparency = 0.3}, 0.2)
-    end)
-    
-    closeBtn.MouseLeave:Connect(function()
-        Animations.Tween(closeBtn, {BackgroundTransparency = 0.8}, 0.2)
-    end)
-    
-    closeBtn.MouseButton1Click:Connect(function()
-        Animations.Tween(mainWindow, {
-            Size = UDim2.new(0, 580, 0, 0),
-            Position = UDim2.new(0.5, -290, 0.5, 0)
-        }, 0.3)
-        task.wait(0.35)
-        screenGui:Destroy()
-    end)
-    
-    -- Minimize button
-    local minimizeBtn = Utils.Create("ImageButton", {
-        Name = "MinimizeButton",
-        Size = UDim2.new(0, 28, 0, 28),
-        Position = UDim2.new(1, -76, 0, 20),
-        BackgroundColor3 = Centrix.Theme.Warning,
-        BackgroundTransparency = 0.8,
-        Image = Centrix.Icons.Minimize,
-        ImageColor3 = Centrix.Theme.Text,
-        ImageTransparency = 0.2,
-        Parent = header,
-        ZIndex = 3
-    })
-    
-    Utils.Create("UICorner", {
-        CornerRadius = UDim.new(0, 6),
-        Parent = minimizeBtn
-    })
-    
-    local minimized = false
-    local originalSize = mainWindow.Size
-    
-    minimizeBtn.MouseEnter:Connect(function()
-        Animations.Tween(minimizeBtn, {BackgroundTransparency = 0.3}, 0.2)
-    end)
-    
-    minimizeBtn.MouseLeave:Connect(function()
-        Animations.Tween(minimizeBtn, {BackgroundTransparency = 0.8}, 0.2)
-    end)
-    
-    minimizeBtn.MouseButton1Click:Connect(function()
-        minimized = not minimized
-        if minimized then
-            Animations.Tween(mainWindow, {Size = UDim2.new(0, 580, 0, 70)}, 0.3)
-        else
-            Animations.Tween(mainWindow, {Size = originalSize}, 0.3)
+    -- Close/Minimize buttons
+    for i, data in ipairs({{Icon = Centrix.Icons.Close, Col = Centrix.Theme.Error, X = -20}, {Icon = Centrix.Icons.Minimize, Col = Centrix.Theme.Warning, X = -52}}) do
+        local btn = Create("ImageButton", {
+            Size = UDim2.new(0, 26, 0, 26), Position = UDim2.new(1, data.X, 0, 18), AnchorPoint = Vector2.new(1, 0),
+            BackgroundColor3 = data.Col, BackgroundTransparency = 0.85, Image = data.Icon,
+            ImageColor3 = Centrix.Theme.TextPrimary, ImageTransparency = 0.3, Parent = header
+        })
+        Create("UICorner", {CornerRadius = UDim.new(0, 6), Parent = btn})
+        
+        btn.MouseEnter:Connect(function()
+            Anim.Tween(btn, {BackgroundTransparency = 0.4, ImageTransparency = 0}, 0.15)
+        end)
+        btn.MouseLeave:Connect(function()
+            Anim.Tween(btn, {BackgroundTransparency = 0.85, ImageTransparency = 0.3}, 0.15)
+        end)
+        
+        if i == 1 then
+            btn.MouseButton1Click:Connect(function()
+                Anim.Tween(main, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}, 0.3)
+                task.wait(0.35)
+                gui:Destroy()
+            end)
         end
-    end)
+    end
     
-    -- Divider line under header
-    local headerDivider = Utils.Create("Frame", {
-        Name = "HeaderDivider",
-        Size = UDim2.new(1, -40, 0, 1),
-        Position = UDim2.new(0, 20, 0, 68),
-        BackgroundColor3 = Centrix.Theme.Divider,
-        BorderSizePixel = 0,
-        Parent = mainWindow,
-        ZIndex = 2
+    -- Divider
+    Create("Frame", {
+        Size = UDim2.new(1, -40, 0, 1), Position = UDim2.new(0, 20, 0, 64),
+        BackgroundColor3 = Centrix.Theme.Border, BorderSizePixel = 0, Parent = main
     })
     
-    -- Tab Container (Left sidebar)
-    local tabContainer = Utils.Create("ScrollingFrame", {
-        Name = "TabContainer",
-        Size = UDim2.new(0, 140, 1, -90),
-        Position = UDim2.new(0, 12, 0, 78),
-        BackgroundColor3 = Centrix.Theme.BackgroundSecondary,
-        BackgroundTransparency = 0.5,
-        BorderSizePixel = 0,
-        ScrollBarThickness = 2,
-        ScrollBarImageColor3 = Centrix.Theme.Primary,
-        ScrollBarImageTransparency = 0.5,
-        CanvasSize = UDim2.new(0, 0, 0, 0),
-        AutomaticCanvasSize = Enum.AutomaticSize.Y,
-        Parent = mainWindow,
-        ZIndex = 2
+    -- Tab sidebar
+    local sidebar = Create("ScrollingFrame", {
+        Name = "Sidebar", Size = UDim2.new(0, 150, 1, -84), Position = UDim2.new(0, 12, 0, 74),
+        BackgroundColor3 = Centrix.Theme.BackgroundFloat, BackgroundTransparency = 0.3, BorderSizePixel = 0,
+        ScrollBarThickness = 2, ScrollBarImageColor3 = Centrix.Theme.Primary, CanvasSize = UDim2.new(0,0,0,0),
+        AutomaticCanvasSize = Enum.AutomaticSize.Y, Parent = main
+    })
+    Create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = sidebar})
+    Create("UIPadding", {PaddingTop = UDim.new(0,6), PaddingBottom = UDim.new(0,6), PaddingLeft = UDim.new(0,6), PaddingRight = UDim.new(0,6), Parent = sidebar})
+    Create("UIListLayout", {Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder, Parent = sidebar})
+    
+    -- Content area
+    local content = Create("Frame", {
+        Name = "Content", Size = UDim2.new(1, -180, 1, -84), Position = UDim2.new(0, 170, 0, 74),
+        BackgroundTransparency = 1, ClipsDescendants = true, Parent = main
     })
     
-    Utils.Create("UICorner", {
-        CornerRadius = UDim.new(0, 8),
-        Parent = tabContainer
-    })
-    
-    Utils.Create("UIPadding", {
-        PaddingTop = UDim.new(0, 6),
-        PaddingBottom = UDim.new(0, 6),
-        PaddingLeft = UDim.new(0, 6),
-        PaddingRight = UDim.new(0, 6),
-        Parent = tabContainer
-    })
-    
-    Utils.Create("UIListLayout", {
-        Padding = UDim.new(0, 4),
-        SortOrder = Enum.SortOrder.LayoutOrder,
-        Parent = tabContainer
-    })
-    
-    -- Content Container
-    local contentContainer = Utils.Create("Frame", {
-        Name = "ContentContainer",
-        Size = UDim2.new(1, -170, 1, -90),
-        Position = UDim2.new(0, 160, 0, 78),
-        BackgroundTransparency = 1,
-        ClipsDescendants = true,
-        Parent = mainWindow,
-        ZIndex = 2
-    })
-    
-    -- Make window draggable
-    Utils.Draggable(mainWindow, header)
+    MakeDraggable(main, header)
     
     -- Open animation
-    mainWindow.Size = UDim2.new(0, 580, 0, 0)
-    mainWindow.Position = UDim2.new(0.5, -290, 0.5, 0)
-    Animations.Tween(mainWindow, {
-        Size = originalSize,
-        Position = UDim2.new(0.5, -290, 0.5, -210)
-    }, 0.4, Enum.EasingStyle.Back)
+    main.Size = UDim2.new(0, 0, 0, 0)
+    main.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Anim.Spring(main, {Size = UDim2.new(0, 600, 0, 440), Position = UDim2.new(0.5, -300, 0.5, -220)}, 0.5)
     
     -- ═══════════════════════════════════════════════════════════
     -- TAB CREATION
     -- ═══════════════════════════════════════════════════════════
     
-    function Window:CreateTab(tabOptions)
-        tabOptions = tabOptions or {}
-        local tabName = tabOptions.Name or "Tab"
-        local tabIcon = tabOptions.Icon or Centrix.Icons.Folder
+    function Window:CreateTab(opts)
+        opts = opts or {}
+        local Tab = {Elements = {}}
         
-        local Tab = {}
-        Tab.Elements = {}
-        
-        -- Tab Button
-        local tabButton = Utils.Create("TextButton", {
-            Name = tabName .. "Tab",
-            Size = UDim2.new(1, 0, 0, 36),
-            BackgroundColor3 = Centrix.Theme.Surface,
-            BackgroundTransparency = 1,
-            BorderSizePixel = 0,
-            Text = "",
-            AutoButtonColor = false,
-            Parent = tabContainer,
-            ZIndex = 3
+        -- Tab button
+        local tabBtn = Create("TextButton", {
+            Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = Centrix.Theme.BackgroundElement,
+            BackgroundTransparency = 1, BorderSizePixel = 0, Text = "", AutoButtonColor = false, Parent = sidebar
         })
-        
-        Utils.Create("UICorner", {
-            CornerRadius = UDim.new(0, 6),
-            Parent = tabButton
-        })
-        
-        -- Tab Icon
-        local tabIconImg = Utils.Create("ImageLabel", {
-            Name = "Icon",
-            Size = UDim2.new(0, 18, 0, 18),
-            Position = UDim2.new(0, 10, 0.5, -9),
-            BackgroundTransparency = 1,
-            Image = tabIcon,
-            ImageColor3 = Centrix.Theme.TextMuted,
-            Parent = tabButton,
-            ZIndex = 4
-        })
-        
-        -- Tab Label
-        local tabLabel = Utils.Create("TextLabel", {
-            Name = "Label",
-            Size = UDim2.new(1, -40, 1, 0),
-            Position = UDim2.new(0, 34, 0, 0),
-            BackgroundTransparency = 1,
-            Text = tabName,
-            TextColor3 = Centrix.Theme.TextMuted,
-            TextSize = 13,
-            Font = Enum.Font.GothamMedium,
-            TextXAlignment = Enum.TextXAlignment.Left,
-            Parent = tabButton,
-            ZIndex = 4
-        })
+        Create("UICorner", {CornerRadius = UDim.new(0, 6), Parent = tabBtn})
         
         -- Active indicator
-        local activeIndicator = Utils.Create("Frame", {
-            Name = "ActiveIndicator",
-            Size = UDim2.new(0, 3, 0.6, 0),
-            Position = UDim2.new(0, 0, 0.2, 0),
-            BackgroundColor3 = Centrix.Theme.Primary,
-            BackgroundTransparency = 1,
-            BorderSizePixel = 0,
-            Parent = tabButton,
-            ZIndex = 4
+        local indicator = Create("Frame", {
+            Size = UDim2.new(0, 3, 0.5, 0), Position = UDim2.new(0, 0, 0.25, 0),
+            BackgroundColor3 = Centrix.Theme.Primary, BackgroundTransparency = 1, BorderSizePixel = 0, Parent = tabBtn
+        })
+        Create("UICorner", {CornerRadius = UDim.new(0, 2), Parent = indicator})
+        
+        -- Icon
+        local icon = Create("ImageLabel", {
+            Size = UDim2.new(0, 18, 0, 18), Position = UDim2.new(0, 12, 0.5, -9),
+            BackgroundTransparency = 1, Image = opts.Icon or Centrix.Icons.Folder,
+            ImageColor3 = Centrix.Theme.TextMuted, Parent = tabBtn
         })
         
-        Utils.Create("UICorner", {
-            CornerRadius = UDim.new(0, 2),
-            Parent = activeIndicator
+        -- Label
+        local label = Create("TextLabel", {
+            Size = UDim2.new(1, -42, 1, 0), Position = UDim2.new(0, 36, 0, 0),
+            BackgroundTransparency = 1, Text = opts.Name or "Tab",
+            TextColor3 = Centrix.Theme.TextMuted, TextSize = 13, Font = Enum.Font.GothamMedium,
+            TextXAlignment = Enum.TextXAlignment.Left, Parent = tabBtn
         })
         
-        -- Tab Content Page
-        local tabPage = Utils.Create("ScrollingFrame", {
-            Name = tabName .. "Page",
-            Size = UDim2.new(1, 0, 1, 0),
-            BackgroundTransparency = 1,
-            BorderSizePixel = 0,
-            ScrollBarThickness = 3,
-            ScrollBarImageColor3 = Centrix.Theme.Primary,
-            ScrollBarImageTransparency = 0.5,
-            CanvasSize = UDim2.new(0, 0, 0, 0),
-            AutomaticCanvasSize = Enum.AutomaticSize.Y,
-            Visible = false,
-            Parent = contentContainer,
-            ZIndex = 2
+        -- Tab page
+        local page = Create("ScrollingFrame", {
+            Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, BorderSizePixel = 0,
+            ScrollBarThickness = 3, ScrollBarImageColor3 = Centrix.Theme.Primary,
+            CanvasSize = UDim2.new(0,0,0,0), AutomaticCanvasSize = Enum.AutomaticSize.Y, Visible = false, Parent = content
         })
+        Create("UIPadding", {PaddingTop = UDim.new(0,4), PaddingBottom = UDim.new(0,4), PaddingRight = UDim.new(0,8), Parent = page})
+        Create("UIListLayout", {Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder, Parent = page})
         
-        Utils.Create("UIPadding", {
-            PaddingTop = UDim.new(0, 4),
-            PaddingBottom = UDim.new(0, 4),
-            PaddingRight = UDim.new(0, 8),
-            Parent = tabPage
-        })
+        Tab.Button = tabBtn
+        Tab.Page = page
         
-        Utils.Create("UIListLayout", {
-            Padding = UDim.new(0, 8),
-            SortOrder = Enum.SortOrder.LayoutOrder,
-            Parent = tabPage
-        })
-        
-        Tab.Button = tabButton
-        Tab.Page = tabPage
-        
-        -- Tab selection logic
         local function selectTab()
-            -- Deselect all tabs
             for _, t in pairs(Window.Tabs) do
-                Animations.Tween(t.Button, {BackgroundTransparency = 1}, 0.2)
-                Animations.Tween(t.Button:FindFirstChild("Icon"), {ImageColor3 = Centrix.Theme.TextMuted}, 0.2)
-                Animations.Tween(t.Button:FindFirstChild("Label"), {TextColor3 = Centrix.Theme.TextMuted}, 0.2)
-                Animations.Tween(t.Button:FindFirstChild("ActiveIndicator"), {BackgroundTransparency = 1}, 0.2)
+                Anim.Tween(t.Button, {BackgroundTransparency = 1}, 0.2)
+                Anim.Tween(t.Button:FindFirstChild("ImageLabel"), {ImageColor3 = Centrix.Theme.TextMuted}, 0.2)
+                Anim.Tween(t.Button:FindFirstChild("TextLabel"), {TextColor3 = Centrix.Theme.TextMuted}, 0.2)
+                Anim.Tween(t.Button:FindFirstChild("Frame"), {BackgroundTransparency = 1}, 0.2)
                 t.Page.Visible = false
             end
-            
-            -- Select this tab
-            Animations.Tween(tabButton, {BackgroundTransparency = 0.7}, 0.2)
-            Animations.Tween(tabIconImg, {ImageColor3 = Centrix.Theme.Primary}, 0.2)
-            Animations.Tween(tabLabel, {TextColor3 = Centrix.Theme.Text}, 0.2)
-            Animations.Tween(activeIndicator, {BackgroundTransparency = 0}, 0.2)
-            tabPage.Visible = true
-            
+            Anim.Tween(tabBtn, {BackgroundTransparency = 0.6}, 0.2)
+            Anim.Tween(icon, {ImageColor3 = Centrix.Theme.Primary}, 0.2)
+            Anim.Tween(label, {TextColor3 = Centrix.Theme.TextPrimary}, 0.2)
+            Anim.Tween(indicator, {BackgroundTransparency = 0}, 0.2)
+            page.Visible = true
             Window.ActiveTab = Tab
         end
         
-        tabButton.MouseButton1Click:Connect(function()
-            selectTab()
+        tabBtn.MouseButton1Click:Connect(selectTab)
+        tabBtn.MouseEnter:Connect(function()
+            if Window.ActiveTab ~= Tab then Anim.Tween(tabBtn, {BackgroundTransparency = 0.8}, 0.15) end
+        end)
+        tabBtn.MouseLeave:Connect(function()
+            if Window.ActiveTab ~= Tab then Anim.Tween(tabBtn, {BackgroundTransparency = 1}, 0.15) end
         end)
         
-        tabButton.MouseEnter:Connect(function()
-            if Window.ActiveTab ~= Tab then
-                Animations.Tween(tabButton, {BackgroundTransparency = 0.85}, 0.2)
-            end
-        end)
-        
-        tabButton.MouseLeave:Connect(function()
-            if Window.ActiveTab ~= Tab then
-                Animations.Tween(tabButton, {BackgroundTransparency = 1}, 0.2)
-            end
-        end)
-        
-        -- Auto-select first tab
-        if #Window.Tabs == 0 then
-            task.defer(selectTab)
-        end
-        
+        if #Window.Tabs == 0 then task.defer(selectTab) end
         table.insert(Window.Tabs, Tab)
         
         -- ═══════════════════════════════════════════════════════
-        -- DROPDOWN COMPONENT
+        -- PARAGRAPH/SECTION
         -- ═══════════════════════════════════════════════════════
         
-        function Tab:CreateDropdown(dropdownOptions)
-            dropdownOptions = dropdownOptions or {}
-            local dropdownName = dropdownOptions.Name or "Dropdown"
-            local items = dropdownOptions.Items or {}
-            local defaultValue = dropdownOptions.Default
-            local multiSelect = dropdownOptions.Multi or false
-            local callback = dropdownOptions.Callback or function() end
+        function Tab:CreateParagraph(opts)
+            opts = opts or {}
+            local para = Create("Frame", {
+                Size = UDim2.new(1, 0, 0, 60), BackgroundColor3 = Centrix.Theme.BackgroundCard,
+                BackgroundTransparency = 0.3, BorderSizePixel = 0, Parent = page
+            })
+            Create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = para})
+            Create("UIPadding", {PaddingLeft = UDim.new(0,14), PaddingRight = UDim.new(0,14), PaddingTop = UDim.new(0,12), PaddingBottom = UDim.new(0,12), Parent = para})
             
+            Create("TextLabel", {
+                Size = UDim2.new(1, 0, 0, 18), BackgroundTransparency = 1,
+                Text = opts.Title or "Section", TextColor3 = Centrix.Theme.TextPrimary,
+                TextSize = 14, Font = Enum.Font.GothamBold, TextXAlignment = Enum.TextXAlignment.Left, Parent = para
+            })
+            
+            local desc = Create("TextLabel", {
+                Size = UDim2.new(1, 0, 0, 20), Position = UDim2.new(0, 0, 0, 22), BackgroundTransparency = 1,
+                Text = opts.Content or "", TextColor3 = Centrix.Theme.TextSecondary,
+                TextSize = 12, Font = Enum.Font.Gotham, TextXAlignment = Enum.TextXAlignment.Left,
+                TextWrapped = true, Parent = para
+            })
+            
+            -- Auto-size
+            local textHeight = desc.TextBounds.Y
+            para.Size = UDim2.new(1, 0, 0, 44 + textHeight)
+            
+            return para
+        end
+        
+        -- ═══════════════════════════════════════════════════════
+        -- TOGGLE
+        -- ═══════════════════════════════════════════════════════
+        
+        function Tab:CreateToggle(opts)
+            opts = opts or {}
+            local Toggle = {}
+            local enabled = opts.Default or false
+            
+            local frame = Create("Frame", {
+                Size = UDim2.new(1, 0, 0, 44), BackgroundColor3 = Centrix.Theme.BackgroundCard,
+                BackgroundTransparency = 0.3, BorderSizePixel = 0, Parent = page
+            })
+            Create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = frame})
+            
+            -- Shadow
+            Create("ImageLabel", {
+                Size = UDim2.new(1, 16, 1, 16), Position = UDim2.new(0.5, 0, 0.5, 4), AnchorPoint = Vector2.new(0.5, 0.5),
+                BackgroundTransparency = 1, Image = "rbxassetid://6014261993", ImageColor3 = Centrix.Theme.Shadow,
+                ImageTransparency = 0.7, ScaleType = Enum.ScaleType.Slice, SliceCenter = Rect.new(49, 49, 450, 450),
+                ZIndex = -1, Parent = frame
+            })
+            
+            Create("TextLabel", {
+                Size = UDim2.new(1, -70, 1, 0), Position = UDim2.new(0, 14, 0, 0),
+                BackgroundTransparency = 1, Text = opts.Name or "Toggle",
+                TextColor3 = Centrix.Theme.TextPrimary, TextSize = 13, Font = Enum.Font.GothamMedium,
+                TextXAlignment = Enum.TextXAlignment.Left, Parent = frame
+            })
+            
+            local toggleBg = Create("Frame", {
+                Size = UDim2.new(0, 44, 0, 24), Position = UDim2.new(1, -56, 0.5, -12),
+                BackgroundColor3 = Centrix.Theme.BackgroundElement, BorderSizePixel = 0, Parent = frame
+            })
+            Create("UICorner", {CornerRadius = UDim.new(1, 0), Parent = toggleBg})
+            
+            local knob = Create("Frame", {
+                Size = UDim2.new(0, 18, 0, 18), Position = UDim2.new(0, 3, 0.5, -9),
+                BackgroundColor3 = Centrix.Theme.TextMuted, BorderSizePixel = 0, Parent = toggleBg
+            })
+            Create("UICorner", {CornerRadius = UDim.new(1, 0), Parent = knob})
+            
+            -- Tooltip
+            if opts.Info then
+                frame.MouseEnter:Connect(function() ShowTooltip(opts.Info, frame) end)
+                frame.MouseLeave:Connect(function() HideTooltip() end)
+            end
+            
+            local function updateToggle()
+                if enabled then
+                    Anim.Spring(knob, {Position = UDim2.new(0, 23, 0.5, -9), BackgroundColor3 = Centrix.Theme.TextPrimary}, 0.3)
+                    Anim.Tween(toggleBg, {BackgroundColor3 = Centrix.Theme.Primary}, 0.2)
+                else
+                    Anim.Spring(knob, {Position = UDim2.new(0, 3, 0.5, -9), BackgroundColor3 = Centrix.Theme.TextMuted}, 0.3)
+                    Anim.Tween(toggleBg, {BackgroundColor3 = Centrix.Theme.BackgroundElement}, 0.2)
+                end
+                if opts.Callback then opts.Callback(enabled) end
+            end
+            
+            local btn = Create("TextButton", {
+                Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Text = "", Parent = frame
+            })
+            
+            btn.MouseButton1Click:Connect(function()
+                enabled = not enabled
+                updateToggle()
+            end)
+            
+            if enabled then updateToggle() end
+            
+            function Toggle:Set(val) enabled = val updateToggle() end
+            function Toggle:Get() return enabled end
+            
+            return Toggle
+        end
+        
+        -- ═══════════════════════════════════════════════════════
+        -- SLIDER
+        -- ═══════════════════════════════════════════════════════
+        
+        function Tab:CreateSlider(opts)
+            opts = opts or {}
+            local Slider = {}
+            local min = opts.Min or 0
+            local max = opts.Max or 100
+            local value = opts.Default or min
+            
+            local frame = Create("Frame", {
+                Size = UDim2.new(1, 0, 0, 56), BackgroundColor3 = Centrix.Theme.BackgroundCard,
+                BackgroundTransparency = 0.3, BorderSizePixel = 0, Parent = page
+            })
+            Create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = frame})
+            
+            Create("TextLabel", {
+                Size = UDim2.new(1, -60, 0, 20), Position = UDim2.new(0, 14, 0, 8),
+                BackgroundTransparency = 1, Text = opts.Name or "Slider",
+                TextColor3 = Centrix.Theme.TextPrimary, TextSize = 13, Font = Enum.Font.GothamMedium,
+                TextXAlignment = Enum.TextXAlignment.Left, Parent = frame
+            })
+            
+            local valLabel = Create("TextLabel", {
+                Size = UDim2.new(0, 50, 0, 20), Position = UDim2.new(1, -60, 0, 8),
+                BackgroundTransparency = 1, Text = tostring(value),
+                TextColor3 = Centrix.Theme.Primary, TextSize = 13, Font = Enum.Font.GothamBold,
+                TextXAlignment = Enum.TextXAlignment.Right, Parent = frame
+            })
+            
+            local sliderBg = Create("Frame", {
+                Size = UDim2.new(1, -28, 0, 8), Position = UDim2.new(0, 14, 0, 36),
+                BackgroundColor3 = Centrix.Theme.BackgroundElement, BorderSizePixel = 0, Parent = frame
+            })
+            Create("UICorner", {CornerRadius = UDim.new(1, 0), Parent = sliderBg})
+            
+            local fill = Create("Frame", {
+                Size = UDim2.new((value - min) / (max - min), 0, 1, 0),
+                BackgroundColor3 = Centrix.Theme.Primary, BorderSizePixel = 0, Parent = sliderBg
+            })
+            Create("UICorner", {CornerRadius = UDim.new(1, 0), Parent = fill})
+            
+            local knob = Create("Frame", {
+                Size = UDim2.new(0, 16, 0, 16), Position = UDim2.new((value - min) / (max - min), -8, 0.5, -8),
+                BackgroundColor3 = Centrix.Theme.TextPrimary, BorderSizePixel = 0, Parent = sliderBg
+            })
+            Create("UICorner", {CornerRadius = UDim.new(1, 0), Parent = knob})
+            Create("UIStroke", {Color = Centrix.Theme.Primary, Thickness = 2, Parent = knob})
+            
+            -- Tooltip
+            if opts.Info then
+                frame.MouseEnter:Connect(function() ShowTooltip(opts.Info, frame) end)
+                frame.MouseLeave:Connect(function() HideTooltip() end)
+            end
+            
+            local dragging = false
+            
+            local function update(input)
+                local rel = math.clamp((input.Position.X - sliderBg.AbsolutePosition.X) / sliderBg.AbsoluteSize.X, 0, 1)
+                value = math.floor(min + (max - min) * rel + 0.5)
+                valLabel.Text = tostring(value)
+                Anim.Tween(fill, {Size = UDim2.new(rel, 0, 1, 0)}, 0.08)
+                Anim.Tween(knob, {Position = UDim2.new(rel, -8, 0.5, -8)}, 0.08)
+                if opts.Callback then opts.Callback(value) end
+            end
+            
+            sliderBg.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    dragging = true
+                    update(input)
+                end
+            end)
+            
+            UserInputService.InputChanged:Connect(function(input)
+                if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+                    update(input)
+                end
+            end)
+            
+            UserInputService.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    dragging = false
+                end
+            end)
+            
+            function Slider:Set(val)
+                value = math.clamp(val, min, max)
+                local rel = (value - min) / (max - min)
+                valLabel.Text = tostring(value)
+                Anim.Tween(fill, {Size = UDim2.new(rel, 0, 1, 0)}, 0.15)
+                Anim.Tween(knob, {Position = UDim2.new(rel, -8, 0.5, -8)}, 0.15)
+            end
+            
+            function Slider:Get() return value end
+            
+            return Slider
+        end
+        
+        -- ═══════════════════════════════════════════════════════
+        -- DROPDOWN
+        -- ═══════════════════════════════════════════════════════
+        
+        function Tab:CreateDropdown(opts)
+            opts = opts or {}
             local Dropdown = {}
             local isOpen = false
-            local selectedItems = {}
+            local selected = opts.Multi and {} or nil
+            local items = opts.Items or {}
             
-            if multiSelect and defaultValue and type(defaultValue) == "table" then
-                for _, v in pairs(defaultValue) do
-                    selectedItems[v] = true
-                end
-            elseif defaultValue then
-                selectedItems[defaultValue] = true
+            if opts.Multi and opts.Default then
+                for _, v in pairs(opts.Default) do selected[v] = true end
+            elseif opts.Default then
+                selected = opts.Default
             end
             
-            -- Main dropdown container
-            local dropdownFrame = Utils.Create("Frame", {
-                Name = dropdownName .. "Dropdown",
-                Size = UDim2.new(1, 0, 0, 60),
-                BackgroundColor3 = Centrix.Theme.Surface,
-                BackgroundTransparency = 0.5,
-                BorderSizePixel = 0,
-                ClipsDescendants = true,
-                Parent = tabPage,
-                ZIndex = 5
+            local frame = Create("Frame", {
+                Size = UDim2.new(1, 0, 0, 56), BackgroundColor3 = Centrix.Theme.BackgroundCard,
+                BackgroundTransparency = 0.3, BorderSizePixel = 0, ClipsDescendants = true, Parent = page
+            })
+            Create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = frame})
+            
+            Create("TextLabel", {
+                Size = UDim2.new(1, -20, 0, 18), Position = UDim2.new(0, 14, 0, 8),
+                BackgroundTransparency = 1, Text = opts.Name or "Dropdown",
+                TextColor3 = Centrix.Theme.TextPrimary, TextSize = 13, Font = Enum.Font.GothamMedium,
+                TextXAlignment = Enum.TextXAlignment.Left, Parent = frame
             })
             
-            Utils.Create("UICorner", {
-                CornerRadius = UDim.new(0, 8),
-                Parent = dropdownFrame
+            local selBtn = Create("TextButton", {
+                Size = UDim2.new(1, -28, 0, 26), Position = UDim2.new(0, 14, 0, 26),
+                BackgroundColor3 = Centrix.Theme.BackgroundElement, BorderSizePixel = 0, Text = "", AutoButtonColor = false, Parent = frame
             })
+            Create("UICorner", {CornerRadius = UDim.new(0, 6), Parent = selBtn})
+            Create("UIStroke", {Color = Centrix.Theme.Border, Thickness = 1, Parent = selBtn})
             
-            -- Label
-            local dropdownLabel = Utils.Create("TextLabel", {
-                Name = "Label",
-                Size = UDim2.new(1, -20, 0, 20),
-                Position = UDim2.new(0, 12, 0, 8),
-                BackgroundTransparency = 1,
-                Text = dropdownName,
-                TextColor3 = Centrix.Theme.Text,
-                TextSize = 13,
-                Font = Enum.Font.GothamMedium,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                Parent = dropdownFrame,
-                ZIndex = 6
-            })
-            
-            -- Selection display button
-            local selectionButton = Utils.Create("TextButton", {
-                Name = "SelectionButton",
-                Size = UDim2.new(1, -24, 0, 28),
-                Position = UDim2.new(0, 12, 0, 28),
-                BackgroundColor3 = Centrix.Theme.BackgroundSecondary,
-                BorderSizePixel = 0,
-                Text = "",
-                AutoButtonColor = false,
-                Parent = dropdownFrame,
-                ZIndex = 6
-            })
-            
-            Utils.Create("UICorner", {
-                CornerRadius = UDim.new(0, 6),
-                Parent = selectionButton
-            })
-            
-            Utils.Create("UIStroke", {
-                Color = Centrix.Theme.Border,
-                Thickness = 1,
-                Transparency = 0.5,
-                Parent = selectionButton
-            })
-            
-            -- Selection text
-            local selectionText = Utils.Create("TextLabel", {
-                Name = "SelectionText",
-                Size = UDim2.new(1, -36, 1, 0),
-                Position = UDim2.new(0, 10, 0, 0),
-                BackgroundTransparency = 1,
-                Text = multiSelect and "Select..." or (defaultValue or "Select..."),
-                TextColor3 = Centrix.Theme.TextSecondary,
-                TextSize = 12,
-                Font = Enum.Font.Gotham,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                TextTruncate = Enum.TextTruncate.AtEnd,
-                Parent = selectionButton,
-                ZIndex = 7
-            })
-            
-            -- Arrow icon
-            local arrowIcon = Utils.Create("ImageLabel", {
-                Name = "Arrow",
-                Size = UDim2.new(0, 16, 0, 16),
-                Position = UDim2.new(1, -22, 0.5, -8),
-                BackgroundTransparency = 1,
-                Image = Centrix.Icons.ChevronDown,
-                ImageColor3 = Centrix.Theme.TextMuted,
-                Parent = selectionButton,
-                ZIndex = 7
-            })
-            
-            -- Items container
-            local itemsContainer = Utils.Create("Frame", {
-                Name = "ItemsContainer",
-                Size = UDim2.new(1, -24, 0, 0),
-                Position = UDim2.new(0, 12, 0, 62),
-                BackgroundTransparency = 1,
-                ClipsDescendants = true,
-                Parent = dropdownFrame,
-                ZIndex = 6
-            })
-            
-            Utils.Create("UIListLayout", {
-                Padding = UDim.new(0, 2),
-                SortOrder = Enum.SortOrder.LayoutOrder,
-                Parent = itemsContainer
-            })
-            
-            local function updateSelectionText()
-                local selected = {}
-                for item, isSelected in pairs(selectedItems) do
-                    if isSelected then
-                        table.insert(selected, item)
-                    end
-                end
-                
-                if #selected == 0 then
-                    selectionText.Text = "Select..."
-                    selectionText.TextColor3 = Centrix.Theme.TextMuted
+            local function getSelText()
+                if opts.Multi then
+                    local list = {}
+                    for k, v in pairs(selected) do if v then table.insert(list, k) end end
+                    return #list > 0 and table.concat(list, ", ") or "Select..."
                 else
-                    selectionText.Text = table.concat(selected, ", ")
-                    selectionText.TextColor3 = Centrix.Theme.Text
+                    return selected or "Select..."
                 end
             end
             
-            local function createItemButton(itemName)
-                local itemButton = Utils.Create("TextButton", {
-                    Name = itemName,
-                    Size = UDim2.new(1, 0, 0, 26),
-                    BackgroundColor3 = Centrix.Theme.SurfaceHover,
-                    BackgroundTransparency = 1,
-                    BorderSizePixel = 0,
-                    Text = "",
-                    AutoButtonColor = false,
-                    Parent = itemsContainer,
-                    ZIndex = 7
+            local selText = Create("TextLabel", {
+                Size = UDim2.new(1, -32, 1, 0), Position = UDim2.new(0, 10, 0, 0),
+                BackgroundTransparency = 1, Text = getSelText(),
+                TextColor3 = selected and Centrix.Theme.TextPrimary or Centrix.Theme.TextMuted,
+                TextSize = 12, Font = Enum.Font.Gotham, TextXAlignment = Enum.TextXAlignment.Left,
+                TextTruncate = Enum.TextTruncate.AtEnd, Parent = selBtn
+            })
+            
+            local arrow = Create("ImageLabel", {
+                Size = UDim2.new(0, 14, 0, 14), Position = UDim2.new(1, -20, 0.5, -7),
+                BackgroundTransparency = 1, Image = Centrix.Icons.ChevronDown,
+                ImageColor3 = Centrix.Theme.TextMuted, Parent = selBtn
+            })
+            
+            local itemsCont = Create("Frame", {
+                Size = UDim2.new(1, -28, 0, 0), Position = UDim2.new(0, 14, 0, 58),
+                BackgroundTransparency = 1, ClipsDescendants = true, Parent = frame
+            })
+            Create("UIListLayout", {Padding = UDim.new(0, 2), Parent = itemsCont})
+            
+            local function createItem(name)
+                local itemBtn = Create("TextButton", {
+                    Size = UDim2.new(1, 0, 0, 26), BackgroundColor3 = Centrix.Theme.BackgroundElement,
+                    BackgroundTransparency = 1, BorderSizePixel = 0, Text = "", AutoButtonColor = false, Parent = itemsCont
                 })
+                Create("UICorner", {CornerRadius = UDim.new(0, 4), Parent = itemBtn})
                 
-                Utils.Create("UICorner", {
-                    CornerRadius = UDim.new(0, 4),
-                    Parent = itemButton
-                })
-                
-                -- Checkbox for multi-select
-                local checkbox
-                if multiSelect then
-                    checkbox = Utils.Create("Frame", {
-                        Name = "Checkbox",
-                        Size = UDim2.new(0, 14, 0, 14),
-                        Position = UDim2.new(0, 6, 0.5, -7),
-                        BackgroundColor3 = Centrix.Theme.BackgroundSecondary,
-                        BorderSizePixel = 0,
-                        Parent = itemButton,
-                        ZIndex = 8
+                local check
+                if opts.Multi then
+                    check = Create("Frame", {
+                        Size = UDim2.new(0, 14, 0, 14), Position = UDim2.new(0, 6, 0.5, -7),
+                        BackgroundColor3 = Centrix.Theme.BackgroundElement, BorderSizePixel = 0, Parent = itemBtn
                     })
-                    
-                    Utils.Create("UICorner", {
-                        CornerRadius = UDim.new(0, 3),
-                        Parent = checkbox
-                    })
-                    
-                    Utils.Create("UIStroke", {
-                        Color = Centrix.Theme.Border,
-                        Thickness = 1,
-                        Parent = checkbox
-                    })
-                    
-                    local checkmark = Utils.Create("ImageLabel", {
-                        Name = "Checkmark",
-                        Size = UDim2.new(0, 10, 0, 10),
-                        Position = UDim2.new(0.5, -5, 0.5, -5),
-                        BackgroundTransparency = 1,
-                        Image = Centrix.Icons.Check,
-                        ImageColor3 = Centrix.Theme.Primary,
-                        ImageTransparency = selectedItems[itemName] and 0 or 1,
-                        Parent = checkbox,
-                        ZIndex = 9
+                    Create("UICorner", {CornerRadius = UDim.new(0, 3), Parent = check})
+                    Create("UIStroke", {Color = Centrix.Theme.Border, Thickness = 1, Parent = check})
+                    Create("ImageLabel", {
+                        Name = "Mark", Size = UDim2.new(0, 10, 0, 10), Position = UDim2.new(0.5, -5, 0.5, -5),
+                        BackgroundTransparency = 1, Image = Centrix.Icons.Check,
+                        ImageColor3 = Centrix.Theme.Primary, ImageTransparency = selected[name] and 0 or 1, Parent = check
                     })
                 end
                 
-                local itemLabel = Utils.Create("TextLabel", {
-                    Name = "Label",
-                    Size = UDim2.new(1, multiSelect and -28 or -12, 1, 0),
-                    Position = UDim2.new(0, multiSelect and 26 or 8, 0, 0),
-                    BackgroundTransparency = 1,
-                    Text = itemName,
-                    TextColor3 = selectedItems[itemName] and Centrix.Theme.Text or Centrix.Theme.TextSecondary,
-                    TextSize = 12,
-                    Font = Enum.Font.Gotham,
-                    TextXAlignment = Enum.TextXAlignment.Left,
-                    Parent = itemButton,
-                    ZIndex = 8
+                Create("TextLabel", {
+                    Size = UDim2.new(1, opts.Multi and -28 or -12, 1, 0),
+                    Position = UDim2.new(0, opts.Multi and 26 or 8, 0, 0),
+                    BackgroundTransparency = 1, Text = name,
+                    TextColor3 = Centrix.Theme.TextSecondary, TextSize = 12, Font = Enum.Font.Gotham,
+                    TextXAlignment = Enum.TextXAlignment.Left, Parent = itemBtn
                 })
                 
-                itemButton.MouseEnter:Connect(function()
-                    Animations.Tween(itemButton, {BackgroundTransparency = 0.5}, 0.15)
-                end)
+                itemBtn.MouseEnter:Connect(function() Anim.Tween(itemBtn, {BackgroundTransparency = 0.5}, 0.1) end)
+                itemBtn.MouseLeave:Connect(function() Anim.Tween(itemBtn, {BackgroundTransparency = 1}, 0.1) end)
                 
-                itemButton.MouseLeave:Connect(function()
-                    Animations.Tween(itemButton, {BackgroundTransparency = 1}, 0.15)
-                end)
-                
-                itemButton.MouseButton1Click:Connect(function()
-                    if multiSelect then
-                        selectedItems[itemName] = not selectedItems[itemName]
-                        local checkmark = checkbox:FindFirstChild("Checkmark")
-                        Animations.Tween(checkmark, {
-                            ImageTransparency = selectedItems[itemName] and 0 or 1
-                        }, 0.15)
-                        itemLabel.TextColor3 = selectedItems[itemName] and Centrix.Theme.Text or Centrix.Theme.TextSecondary
-                        
-                        updateSelectionText()
-                        
-                        local selected = {}
-                        for item, sel in pairs(selectedItems) do
-                            if sel then table.insert(selected, item) end
-                        end
-                        callback(selected)
+                itemBtn.MouseButton1Click:Connect(function()
+                    if opts.Multi then
+                        selected[name] = not selected[name]
+                        Anim.Tween(check:FindFirstChild("Mark"), {ImageTransparency = selected[name] and 0 or 1}, 0.15)
+                        selText.Text = getSelText()
+                        selText.TextColor3 = Centrix.Theme.TextPrimary
+                        local list = {}
+                        for k, v in pairs(selected) do if v then table.insert(list, k) end end
+                        if opts.Callback then opts.Callback(list) end
                     else
-                        selectedItems = {[itemName] = true}
-                        updateSelectionText()
-                        callback(itemName)
-                        
-                        -- Close dropdown
+                        selected = name
+                        selText.Text = name
+                        selText.TextColor3 = Centrix.Theme.TextPrimary
                         isOpen = false
-                        local itemCount = #items
-                        local targetHeight = 60
-                        Animations.Tween(dropdownFrame, {Size = UDim2.new(1, 0, 0, targetHeight)}, 0.25)
-                        Animations.Tween(arrowIcon, {Rotation = 0}, 0.25)
+                        Anim.Tween(frame, {Size = UDim2.new(1, 0, 0, 56)}, 0.2)
+                        Anim.Tween(arrow, {Rotation = 0}, 0.2)
+                        if opts.Callback then opts.Callback(name) end
                     end
                 end)
-                
-                return itemButton
             end
             
-            -- Create item buttons
-            for _, item in ipairs(items) do
-                createItemButton(item)
-            end
+            for _, item in ipairs(items) do createItem(item) end
             
-            if multiSelect then
-                updateSelectionText()
-            end
-            
-            -- Toggle dropdown
-            selectionButton.MouseButton1Click:Connect(function()
+            selBtn.MouseButton1Click:Connect(function()
                 isOpen = not isOpen
-                
-                local itemCount = #items
-                local itemsHeight = itemCount * 28
-                
-                if isOpen then
-                    local targetHeight = 66 + itemsHeight
-                    Animations.Tween(dropdownFrame, {Size = UDim2.new(1, 0, 0, targetHeight)}, 0.25, Enum.EasingStyle.Quint)
-                    Animations.Tween(itemsContainer, {Size = UDim2.new(1, -24, 0, itemsHeight)}, 0.25, Enum.EasingStyle.Quint)
-                    Animations.Tween(arrowIcon, {Rotation = 180}, 0.25)
+                local h = isOpen and (62 + #items * 28) or 56
+                Anim.Tween(frame, {Size = UDim2.new(1, 0, 0, h)}, 0.25)
+                Anim.Tween(itemsCont, {Size = UDim2.new(1, -28, 0, isOpen and #items * 28 or 0)}, 0.25)
+                Anim.Tween(arrow, {Rotation = isOpen and 180 or 0}, 0.25)
+            end)
+            
+            selBtn.MouseEnter:Connect(function() Anim.Tween(selBtn:FindFirstChild("UIStroke"), {Color = Centrix.Theme.Primary}, 0.15) end)
+            selBtn.MouseLeave:Connect(function() Anim.Tween(selBtn:FindFirstChild("UIStroke"), {Color = Centrix.Theme.Border}, 0.15) end)
+            
+            function Dropdown:Set(val)
+                if opts.Multi then
+                    selected = {}
+                    for _, v in pairs(val) do selected[v] = true end
                 else
-                    Animations.Tween(dropdownFrame, {Size = UDim2.new(1, 0, 0, 60)}, 0.25, Enum.EasingStyle.Quint)
-                    Animations.Tween(itemsContainer, {Size = UDim2.new(1, -24, 0, 0)}, 0.25, Enum.EasingStyle.Quint)
-                    Animations.Tween(arrowIcon, {Rotation = 0}, 0.25)
+                    selected = val
                 end
-            end)
-            
-            selectionButton.MouseEnter:Connect(function()
-                Animations.Tween(selectionButton:FindFirstChild("UIStroke"), {Color = Centrix.Theme.Primary}, 0.2)
-            end)
-            
-            selectionButton.MouseLeave:Connect(function()
-                Animations.Tween(selectionButton:FindFirstChild("UIStroke"), {Color = Centrix.Theme.Border}, 0.2)
-            end)
-            
-            -- Dropdown API
-            function Dropdown:Set(value)
-                if multiSelect and type(value) == "table" then
-                    selectedItems = {}
-                    for _, v in pairs(value) do
-                        selectedItems[v] = true
-                    end
-                    updateSelectionText()
-                    callback(value)
-                elseif not multiSelect then
-                    selectedItems = {[value] = true}
-                    updateSelectionText()
-                    callback(value)
-                end
+                selText.Text = getSelText()
+                selText.TextColor3 = Centrix.Theme.TextPrimary
             end
             
             function Dropdown:Get()
-                if multiSelect then
-                    local selected = {}
-                    for item, sel in pairs(selectedItems) do
-                        if sel then table.insert(selected, item) end
-                    end
-                    return selected
-                else
-                    for item, sel in pairs(selectedItems) do
-                        if sel then return item end
-                    end
-                    return nil
+                if opts.Multi then
+                    local list = {}
+                    for k, v in pairs(selected) do if v then table.insert(list, k) end end
+                    return list
                 end
+                return selected
             end
             
-            function Dropdown:Refresh(newItems)
-                items = newItems
-                
-                for _, child in pairs(itemsContainer:GetChildren()) do
-                    if child:IsA("TextButton") then
-                        child:Destroy()
-                    end
-                end
-                
-                for _, item in ipairs(items) do
-                    createItemButton(item)
-                end
-            end
-            
-            table.insert(Tab.Elements, Dropdown)
             return Dropdown
         end
         
         return Tab
     end
     
-    -- Window API
-    function Window:Destroy()
-        screenGui:Destroy()
-    end
-    
-    function Window:Toggle(visible)
-        mainWindow.Visible = visible
-    end
-    
     return Window
 end
-
--- ═══════════════════════════════════════════════════════════════
--- RETURN LIBRARY
--- ═══════════════════════════════════════════════════════════════
 
 return Centrix
